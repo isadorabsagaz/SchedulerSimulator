@@ -7,16 +7,18 @@ public class Task {
     private int computation_time;
     private int period_time;
     private int quantum;
+    private int deadline;
     private int waiting_time;
     private int initial_computation_time;
     private int initial_quantum;
 
-    public Task(int id, int offset, int computation_time, int period_time, int quantum) {
+    public Task(int id, int offset, int computation_time, int period_time, int quantum, int deadline) {
         this.id = id;
         this.offset = offset;
         this.computation_time = computation_time;
         this.period_time = period_time;
         this.quantum = quantum;
+        this.deadline = deadline;
         this.waiting_time = 0;
         this.initial_computation_time = computation_time;
         this.initial_quantum = quantum;
@@ -58,6 +60,14 @@ public class Task {
         return waiting_time;
     }
 
+    public int getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(int deadline) {
+        this.deadline = deadline;
+    }
+
     public void setWaiting_time(int waiting_time) {
         this.waiting_time = waiting_time;
     }
@@ -93,6 +103,7 @@ public class Task {
                 ", computation_time = " + computation_time +
                 ", period_time = " + period_time +
                 ", quantum = " + quantum +
+                ", deadline = " + deadline +
                 ", waiting_time = " + waiting_time +
                 '}' +
                 "\n";
