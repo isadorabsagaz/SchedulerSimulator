@@ -115,7 +115,7 @@ public class Scheduler {
 
     private void addToReadyQueue(int i, Task[] tasks){
         for (Task task : tasks) {
-            if (task.getOffset() == i || (i - task.getOffset()) % task.getPeriod_time() == 0){
+            if (task.getOffset() == i || (i - task.getOffset()) % task.getPeriod_time() == 0){ //
                 task.setInitial_computation_time(task.getComputation_time());
                 task.setInitial_quantum(task.getQuantum());
                 readyQueue.add(task);
