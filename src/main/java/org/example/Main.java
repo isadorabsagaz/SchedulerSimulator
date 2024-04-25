@@ -5,7 +5,7 @@ import org.example.Jsons.JsonReader;
 public class Main {
     public static void main(String[] args) {
         Scheduler scheduler = new Scheduler();
-        String schedulerName = "rr";
+        String schedulerName = "rm";
         SchedulerInfo schedulerInfo = new JsonReader().readJson(schedulerName);
 
         switch(schedulerName){

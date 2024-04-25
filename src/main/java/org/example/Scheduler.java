@@ -89,8 +89,7 @@ public class Scheduler {
         }
         else{
             switch (info.getScheduler_name()) {
-                case "fcfs" -> {
-                }
+                case "fcfs" -> {}
                 case "rr" -> {
                     if (cpu[0].getQuantum() == 0) {
                         cpu[0].setQuantum(cpu[0].getInitial_quantum()); //restart quantum
@@ -107,13 +106,16 @@ public class Scheduler {
                         }
                     }
                 }
+                case "edf" -> {
+                    System.out.println();
+                }
             }
         }
     }
 
     private void addToReadyQueue(int i, Task[] tasks){
         for (Task task : tasks) {
-            if (task.getOffset() == i ){//|| ((i - task.getOffset()) % task.getPeriod_time()) == 0) { //TODO AQUI QUEBROU POR CONTA DO IF DO RATE MONOTONIC
+            if (task.getOffset() == i || (i - task.getOffset()) % task.getPeriod_time() == 0){
                 task.setInitial_computation_time(task.getComputation_time());
                 task.setInitial_quantum(task.getQuantum());
                 readyQueue.add(task);
