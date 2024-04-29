@@ -140,7 +140,7 @@ public class Scheduler {
                 }
                 case "edf" -> {
                     for (Task task : readyQueue){
-                        if(((cpu[0].getDeadline() * cpu[0].getN()) - i) > ((task.getDeadline() * task.getN()) - i)){ //TODO
+                        if(((cpu[0].getDeadline() * cpu[0].getN()) - i) > ((task.getDeadline() * task.getN()) - i)){ 
                             readyQueue.add(cpu[0]);
                             cpu[0] = task;
                             readyQueue.remove(task);
