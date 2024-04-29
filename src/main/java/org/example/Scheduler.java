@@ -12,6 +12,8 @@ public class Scheduler {
     private final List<Task> readyQueue;
     private final List<Task> finishedQueue;
     private final Logs log;
+    private boolean scalable = false;
+    private float utilizationSum = 0;
 
     public Scheduler() {
         this.cpu = new Task[1];
@@ -31,7 +33,7 @@ public class Scheduler {
 
             printLogs(i);
         }
-        log.printLogs(info, finishedQueue);
+        log.printLogs(info, finishedQueue, scalable);
     }
 
     public void roundRobin(SchedulerInfo info){
@@ -45,12 +47,17 @@ public class Scheduler {
 
             printLogs(i);
         }
-        log.printLogs(info, finishedQueue);
+        log.printLogs(info, finishedQueue, scalable);
     }
 
     public void rateMonotonic(SchedulerInfo info){
         Task[] tasks = info.getTasks();
         Task aux = null;
+
+        for (Task task : tasks){
+            utilizationSum += (float) task.getComputation_time() / task.getPeriod_time();
+        }
+        if(utilizationSum <= info.getTasks_number() * (Math.pow(2, (float) 1 / info.getTasks_number()) - 1)) scalable = true;
 
         for (int i = 0; i <= info.getSimulation_time(); i++) {
             for (int j = 0; j < info.getTasks_number() - 1; j++) {
@@ -66,16 +73,21 @@ public class Scheduler {
 
             printLogs(i);
         }
-        log.printLogs(info, finishedQueue);
+        log.printLogs(info, finishedQueue, scalable);
     }
 
     public void earliestDeadlineFirst(SchedulerInfo info){
         Task[] tasks = info.getTasks();
         Task aux = null;
 
+        for (Task task : tasks){
+            utilizationSum += (float) task.getComputation_time() / task.getPeriod_time();
+        }
+        if(utilizationSum <= 1) scalable = true;
+
         for (int i = 0; i <= info.getSimulation_time(); i++) {
             for (int j = 0; j < info.getTasks_number() - 1; j++) {
-                if(tasks[j].getDeadline() > tasks[j].getDeadline()){
+                if(((tasks[j].getDeadline() * tasks[j].getN()) - i)  > ((tasks[j+1].getDeadline() * tasks[j+1].getN()) - i)){
                     aux = tasks[j];
                     tasks[j] = tasks[j+1];
                     tasks[j+1] = aux;
@@ -85,23 +97,25 @@ public class Scheduler {
             if(cpu[0] != null) compute(i, info);
             if(cpu[0] == null && !readyQueue.isEmpty()) removeFromReadyQueue();
 
+            //checkMissedDeadline(i);
             printLogs(i);
-            //checkMissedDeadline(i, tasks);
         }
-        log.printLogs(info, finishedQueue);
+        log.printLogs(info, finishedQueue, scalable);
     }
 
     private void compute(int i, SchedulerInfo info){
         cpu[0].setComputation_time(cpu[0].getComputation_time() - 1); //computa quem estiver na cpu
+        if (cpu[0].getQuantum() != 0) cpu[0].setQuantum(cpu[0].getQuantum() - 1); //decrementa quantum
         info.setTimeCpuUsed(info.getTimeCpuUsed() + 1);
-        if(cpu[0].getQuantum() != 0) cpu[0].setQuantum(cpu[0].getQuantum() - 1); //decrementa quantum
 
         for (Task task : readyQueue) {
-            if (task.getOffset() != i) task.setWaiting_time(task.getWaiting_time() + 1);  //add wainting time
+            if (task.getOffset() != i && (i - task.getOffset()) % task.getPeriod_time() != 0) {
+                task.setWaiting_time(task.getWaiting_time() + 1);  //add wainting time
+            }
         }
 
         if (cpu[0].getComputation_time() == 0) {
-            cpu[0].setComputation_time(cpu[0].getInitial_computation_time());  //set computation_time task for the original value
+            cpu[0].setComputation_time(cpu[0].getInitial_computation_time()); //set computation_time task for the original value
             finishedQueue.add(cpu[0]); //add to finishedQueue
             cpu[0] = null;
         }
@@ -126,7 +140,7 @@ public class Scheduler {
                 }
                 case "edf" -> {
                     for (Task task : readyQueue){
-                        if(cpu[0].getDeadline() - i > task.getDeadline()){
+                        if(((cpu[0].getDeadline() * cpu[0].getN()) - i) > ((task.getDeadline() * task.getN()) - i)){ //TODO
                             readyQueue.add(cpu[0]);
                             cpu[0] = task;
                             readyQueue.remove(task);
@@ -139,9 +153,10 @@ public class Scheduler {
 
     private void addToReadyQueue(int i, Task[] tasks){
         for (Task task : tasks) {
-            if (task.getOffset() == i || (i - task.getOffset()) % task.getPeriod_time() == 0){ //
+            if (task.getOffset() == i || (i - task.getOffset()) % task.getPeriod_time() == 0){
                 task.setInitial_computation_time(task.getComputation_time());
                 task.setInitial_quantum(task.getQuantum());
+                task.setN(task.getN() + 1);
                 readyQueue.add(task);
             }
         }
@@ -152,14 +167,16 @@ public class Scheduler {
         readyQueue.remove(0);
     }
 
-   /* private void checkMissedDeadline(int i, Task[] tasks){
+  /* private void checkMissedDeadline(int i){
         for (Task task : readyQueue){
-            if ((i - task.getOffset()) % task.getDeadline() == 0){
-                System.out.println("Missed deadline of task "+task.getId()+" at i = "+i);
+            if (task.getDeadline() * task.getN() == i && task.getComputation_time() > 0) {
+                System.out.println(" ! MISSED DEADLINE OF TASK "+task.getId()+", AT TIME = "+i);
+                readyQueue.remove(task);
             }
         }
     }
-    */
+
+   */
 
     private void printLogs(int i){
         System.out.println("* CURRENT TIME: " + i);

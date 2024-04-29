@@ -7,9 +7,9 @@ import java.util.List;
 
 public class Logs {
 
-    public void printLogs(SchedulerInfo info, List<Task> queue) {
-        int waitingSum = 0;
-        int lifeTimeSum = 0;
+    public void printLogs(SchedulerInfo info, List<Task> queue, boolean scalable) {
+        float waitingSum = 0;
+        float lifeTimeSum = 0;
 
         System.out.println("Waiting time and turnaround time of each task: ");
 
@@ -20,10 +20,10 @@ public class Logs {
             waitingSum += task.getWaiting_time();
             lifeTimeSum += (task.getComputation_time() + task.getWaiting_time());
         }
-        System.out.println("\nUtilization Time = "+(double) info.getTimeCpuUsed() / info.getSimulation_time());
-        System.out.println("Productivity = "+(double) info.getTasks_number() / info.getSimulation_time());
-        System.out.println("Waiting Time = "+(double) waitingSum / info.getTasks_number());
-        System.out.println("Tournaround Time = "+(double) lifeTimeSum / info.getTasks_number());
-
+        if(scalable) System.out.println("\nThe set IS scalable!");
+        System.out.println("\nUtilization Time = "+(float) info.getTimeCpuUsed() / info.getSimulation_time());
+        System.out.println("Productivity = "+(float) info.getTasks_number() / info.getSimulation_time());
+        System.out.println("Waiting Time (avg) = "+ waitingSum / info.getTasks_number());
+        System.out.println("Tournaround Time (avg) = "+ lifeTimeSum / info.getTasks_number());
     }
 }

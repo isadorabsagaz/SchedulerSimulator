@@ -11,6 +11,7 @@ public class Task {
     private int waiting_time;
     private int initial_computation_time;
     private int initial_quantum;
+    private int n; //number of appearances
 
     public Task(int id, int offset, int computation_time, int period_time, int quantum, int deadline) {
         this.id = id;
@@ -22,6 +23,7 @@ public class Task {
         this.waiting_time = 0;
         this.initial_computation_time = computation_time;
         this.initial_quantum = quantum;
+        this.n = 1;
     }
 
     public int getOffset() {
@@ -94,6 +96,15 @@ public class Task {
 
     public void setInitial_quantum(int initial_quantum) {
         this.initial_quantum = initial_quantum;
+
+    }
+
+    public int getN() {
+        return n;
+    }
+
+    public void setN(int n) {
+        this.n = n;
     }
 
     @Override

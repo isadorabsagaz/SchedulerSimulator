@@ -18,7 +18,6 @@ public class SchedulerInfo {
         this.timeCpuUsed = 0;
     }
 
-
     public int getSimulation_time() {
         return simulation_time;
     }
