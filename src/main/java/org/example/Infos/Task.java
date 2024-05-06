@@ -12,9 +12,10 @@ public class Task {
     private int initial_computation_time;
     private int initial_quantum;
     private int n; //number of appearances
+    private boolean missedDeadline;
+    private int countMissedDeadlines;
 
-    public Task(int id, int offset, int computation_time, int period_time, int quantum, int deadline) {
-        this.id = id;
+    public Task(int offset, int computation_time, int period_time, int quantum, int deadline, int id, int n) {
         this.offset = offset;
         this.computation_time = computation_time;
         this.period_time = period_time;
@@ -23,7 +24,10 @@ public class Task {
         this.waiting_time = 0;
         this.initial_computation_time = computation_time;
         this.initial_quantum = quantum;
-        this.n = 1;
+        this.n = n;
+        this.id = id;
+        this.missedDeadline = false;
+        this.countMissedDeadlines = 0;
     }
 
     public int getOffset() {
@@ -107,9 +111,25 @@ public class Task {
         this.n = n;
     }
 
+    public int getCountMissedDeadlines() {
+        return countMissedDeadlines;
+    }
+
+    public void setCountMissedDeadlines(int countMissedDeadlines) {
+        this.countMissedDeadlines = countMissedDeadlines;
+    }
+
+    public boolean isMissedDeadline() {
+        return missedDeadline;
+    }
+
+    public void setMissedDeadline(boolean missedDeadline) {
+        this.missedDeadline = missedDeadline;
+    }
+
     @Override
     public String toString() {
-        return "Task " + id + " {" +
+        return "Task " +id+ " {" +
                 " offset = " + offset +
                 ", computation_time = " + computation_time +
                 ", period_time = " + period_time +

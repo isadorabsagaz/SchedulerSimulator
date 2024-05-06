@@ -13,10 +13,10 @@ public class JsonReader {
     public SchedulerInfo readJson(String name) {
         SchedulerInfo schedulerInfo;
         String path = switch (name) {
-            case "fcfs" -> "C:\\Users\\isado\\IdeaProjects\\Sistemas Operacionais\\Scheduler\\src\\main\\java\\org\\example\\Jsons\\exemplo_fcfs.json";
-            case "rr" -> "C:\\Users\\isado\\IdeaProjects\\Sistemas Operacionais\\Scheduler\\src\\main\\java\\org\\example\\Jsons\\exemplo_rr.json";
-            case "rm" -> "C:\\Users\\isado\\IdeaProjects\\Sistemas Operacionais\\Scheduler\\src\\main\\java\\org\\example\\Jsons\\exemplo_rm.json";
-            case "edf" -> "C:\\Users\\isado\\IdeaProjects\\Sistemas Operacionais\\Scheduler\\src\\main\\java\\org\\example\\Jsons\\exemplo_edf.json";
+            case "fcfs" -> "src/main/java/org/example/Jsons/exemplo_fcfs.json";
+            case "rr" -> "src/main/java/org/example/Jsons/exemplo_rr.json";
+            case "rm" -> "src/main/java/org/example/Jsons/exemplo_rm.json";
+            case "edf" -> "src/main/java/org/example/Jsons/exemplo_edf.json";
             default -> "";
         };
 

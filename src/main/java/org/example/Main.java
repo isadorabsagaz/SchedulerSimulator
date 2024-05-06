@@ -4,16 +4,17 @@ import org.example.Jsons.JsonReader;
 
 public class Main {
     public static void main(String[] args) {
-        Scheduler scheduler = new Scheduler();
+
         String schedulerName = "edf";
-        SchedulerInfo schedulerInfo = new JsonReader().readJson(schedulerName);
+        SchedulerInfo schedulerInfos = new JsonReader().readJson(schedulerName);
+
+        Scheduler scheduler = new Scheduler(schedulerInfos);
 
         switch(schedulerName){
-            case "fcfs" -> scheduler.fcfs(schedulerInfo);
-            case "rr" ->  scheduler.roundRobin(schedulerInfo);
-            case "rm" -> scheduler.rateMonotonic(schedulerInfo);
-            case "edf" ->  scheduler.earliestDeadlineFirst(schedulerInfo);
-
+            case "fcfs" -> scheduler.fcfs();
+            case "rr" ->  scheduler.roundRobin();
+            case "rm" -> scheduler.rateMonotonic();
+            case "edf" ->  scheduler.earliestDeadlineFirst();
         }
     }
 }
