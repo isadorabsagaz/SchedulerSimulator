@@ -1,4 +1,4 @@
-package org.example.Infos;
+package org.example.infos;
 
 public class Task {
 
@@ -11,7 +11,7 @@ public class Task {
     private int waiting_time;
     private int initial_computation_time;
     private int initial_quantum;
-    private int n; //number of appearances
+    private int n;
     private boolean missedDeadline;
     private int countMissedDeadlines;
 

@@ -1,4 +1,4 @@
-package org.example.Infos;
+package org.example.infos;
 
 import java.util.Arrays;
 

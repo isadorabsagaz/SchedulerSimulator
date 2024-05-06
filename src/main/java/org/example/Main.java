@@ -1,6 +1,6 @@
 package org.example;
-import org.example.Infos.SchedulerInfo;
-import org.example.Jsons.JsonReader;
+import org.example.infos.SchedulerInfo;
+import org.example.jsons.JsonReader;
 
 public class Main {
     public static void main(String[] args) {

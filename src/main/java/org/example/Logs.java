@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.Infos.SchedulerInfo;
-import org.example.Infos.Task;
+import org.example.infos.SchedulerInfo;
+import org.example.infos.Task;
 
 import java.util.List;
 
@@ -38,6 +38,7 @@ public class Logs {
         System.out.println("\nBiggest and Smallest Waiting Time: Task "+biggestWaitingTime.getId()+"("+biggestWaitingTime.getWaiting_time()+")"
                 +" | Task "+smallestWaitingTime.getId()+"("+smallestWaitingTime.getWaiting_time()+")");
     }
+
 
     public void printLogsPeriodic(SchedulerInfo info, float utilizationSum, List<Task> queue){
         System.out.println("\nScalability Test: ");

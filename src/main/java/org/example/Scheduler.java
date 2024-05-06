@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.Infos.SchedulerInfo;
-import org.example.Infos.Task;
+import org.example.infos.SchedulerInfo;
+import org.example.infos.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,20 +114,20 @@ public class Scheduler {
     }
 
     private void compute(int i){
-        cpu[0].setComputation_time(cpu[0].getComputation_time() - 1); //computa quem estiver na cpu
+        cpu[0].setComputation_time(cpu[0].getComputation_time() - 1);
 
-        if (cpu[0].getQuantum() != 0) cpu[0].setQuantum(cpu[0].getQuantum() - 1); //decrementa quantum
+        if (cpu[0].getQuantum() != 0) cpu[0].setQuantum(cpu[0].getQuantum() - 1);
         info.setTimeCpuUsed(info.getTimeCpuUsed() + 1);
 
         for (Task task : readyQueue) {
             if (task.getOffset() != i && (i - task.getOffset()) % task.getPeriod_time() != 0) {
-                task.setWaiting_time(task.getWaiting_time() + 1);  //add wainting time
+                task.setWaiting_time(task.getWaiting_time() + 1);
             }
         }
 
         if (cpu[0].getComputation_time() == 0) {
-            cpu[0].setComputation_time(cpu[0].getInitial_computation_time()); //set computation_time task for the original value
-            finishedQueue.add(cpu[0]); //add to finishedQueue
+            cpu[0].setComputation_time(cpu[0].getInitial_computation_time());
+            finishedQueue.add(cpu[0]);
             cpu[0] = null;
         }
         else{
@@ -135,8 +135,8 @@ public class Scheduler {
                 case "fcfs" -> {}
                 case "rr" -> {
                     if (cpu[0].getQuantum() == 0) {
-                        cpu[0].setQuantum(cpu[0].getInitial_quantum()); //restart quantum
-                        readyQueue.add(cpu[0]); //add to readyQueue again
+                        cpu[0].setQuantum(cpu[0].getInitial_quantum());
+                        readyQueue.add(cpu[0]);
                         cpu[0] = null;
                     }
                 }

@@ -1,9 +1,8 @@
-package org.example.Jsons;
+package org.example.jsons;
 
 import com.google.gson.Gson;
-import org.example.Infos.SchedulerInfo;
+import org.example.infos.SchedulerInfo;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
