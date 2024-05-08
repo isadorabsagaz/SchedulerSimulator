@@ -24,6 +24,7 @@ public class JsonReader {
             System.out.println(schedulerInfo);
             System.out.println("==============================================================================================");
         } catch (IOException e) {
+            System.out.println("\nIncorrect path!");
             throw new RuntimeException(e);
         }
         return schedulerInfo;

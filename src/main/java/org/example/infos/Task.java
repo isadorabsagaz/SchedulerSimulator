@@ -2,17 +2,16 @@ package org.example.infos;
 
 public class Task {
 
-    private int id;
     private int offset;
     private int computation_time;
     private int period_time;
     private int quantum;
     private int deadline;
+    private int id;
+    private int n;
     private int waiting_time;
     private int initial_computation_time;
     private int initial_quantum;
-    private int n;
-    private boolean missedDeadline;
     private int countMissedDeadlines;
 
     public Task(int offset, int computation_time, int period_time, int quantum, int deadline, int id, int n) {
@@ -21,12 +20,11 @@ public class Task {
         this.period_time = period_time;
         this.quantum = quantum;
         this.deadline = deadline;
+        this.id = id;
+        this.n = n;
         this.waiting_time = 0;
         this.initial_computation_time = computation_time;
         this.initial_quantum = quantum;
-        this.n = n;
-        this.id = id;
-        this.missedDeadline = false;
         this.countMissedDeadlines = 0;
     }
 
@@ -119,17 +117,9 @@ public class Task {
         this.countMissedDeadlines = countMissedDeadlines;
     }
 
-    public boolean isMissedDeadline() {
-        return missedDeadline;
-    }
-
-    public void setMissedDeadline(boolean missedDeadline) {
-        this.missedDeadline = missedDeadline;
-    }
-
     @Override
     public String toString() {
-        return "Task " +id+ " {" +
+        return "Task " +id+ " (n = "+n+") {" +
                 " offset = " + offset +
                 ", computation_time = " + computation_time +
                 ", period_time = " + period_time +

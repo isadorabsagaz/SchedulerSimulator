@@ -64,7 +64,7 @@ public class SchedulerInfo {
                 "\n # Scheduler Name: " + scheduler_name.toUpperCase() +
                 "\n # Simulation Time: " + simulation_time +
                 "\n # Tasks Number: " + tasks_number +
-                "\n # Tasks # " + Arrays.toString(tasks);
+                "\n # Tasks: " + "\n"+Arrays.toString(tasks);
     }
 
 }

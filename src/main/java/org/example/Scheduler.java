@@ -25,7 +25,6 @@ public class Scheduler {
         this.log = new Logs();
         for (int i = 0; i < info.getTasks_number(); i++) {
             tasks[i].setId(i+1);
-            tasks[i].setN(1);
         }
     }
 
@@ -38,7 +37,7 @@ public class Scheduler {
 
             printLogs(i);
         }
-        log.printLogs(info, finishedQueue);
+        log.printLogs(info, finishedQueue, 0);
     }
 
     public void roundRobin(){
@@ -50,14 +49,13 @@ public class Scheduler {
 
             printLogs(i);
         }
-        log.printLogs(info, finishedQueue);
+        log.printLogs(info, finishedQueue, 0);
     }
 
     public void rateMonotonic(){
         for (Task task : tasks){
             utilizationSum += (float) task.getComputation_time() / task.getPeriod_time();
         }
-
         if(utilizationSum > info.getTasks_number() * (Math.pow(2, (float) 1 / info.getTasks_number()) - 1)) {
             System.out.println("! Warning: The set is NOT scalable");
             return;
@@ -79,15 +77,13 @@ public class Scheduler {
             checkMissedDeadline(i);
             printLogs(i);
         }
-        log.printLogs(info, finishedQueue);
-        log.printLogsPeriodic(info, utilizationSum, finishedQueue);
+        log.printLogs(info, finishedQueue, utilizationSum);
     }
 
     public void earliestDeadlineFirst() {
         for (Task task : tasks) {
             utilizationSum += (float) task.getComputation_time() / task.getPeriod_time();
         }
-
         if (utilizationSum > 1) {
             System.out.println( "! Warning: The set is NOT scalable");
             return;
@@ -109,8 +105,7 @@ public class Scheduler {
             checkMissedDeadline(i);
             printLogs(i);
         }
-        log.printLogs(info, finishedQueue);
-        log.printLogsPeriodic(info, utilizationSum, finishedQueue);
+        log.printLogs(info, finishedQueue, utilizationSum);
     }
 
     private void compute(int i){
@@ -164,15 +159,12 @@ public class Scheduler {
 
     private void addToReadyQueue(int i) {
         for (Task task : tasks){
-            if (task.getOffset() == i){
+            if (task.getOffset() == i || (i - task.getOffset()) % task.getPeriod_time() == 0){
                 task.setInitial_computation_time(task.getComputation_time());
                 task.setInitial_quantum(task.getQuantum());
-                readyQueue.add(task);
-            }
-            else if((i - task.getOffset()) % task.getPeriod_time() == 0){
                 task.setN(task.getN() + 1);
-                Task periodicTask = new Task(i, task.getComputation_time(), task.getPeriod_time(), 0, task.getDeadline() * (task.getN()),
-                      task.getId(), task.getN());
+                Task periodicTask = new Task(i, task.getComputation_time(), task.getPeriod_time(), task.getQuantum(),
+                        task.getDeadline() * (task.getN()), task.getId(), task.getN());
                 readyQueue.add(periodicTask);
             }
         }
@@ -186,7 +178,6 @@ public class Scheduler {
    private void checkMissedDeadline(int i){
         for (Task task : readyQueue){
             if (task.getDeadline() == i) {
-                task.setMissedDeadline(true);
                 task.setCountMissedDeadlines(task.getCountMissedDeadlines() + 1);
                 System.out.println("! MISSED DEADLINE OF TASK "+task.getId()+"AT TIME "+ i);
             }
@@ -195,9 +186,9 @@ public class Scheduler {
 
     private void printLogs(int i){
         System.out.println("* CURRENT TIME: " + i);
-        System.out.println("* READY QUEUE: " + readyQueue);
+        System.out.println("* READY QUEUE: " +"\n"+readyQueue);
         System.out.println("* CPU: " + cpu[0]);
-        System.out.println("* FINISHED QUEUE: " + finishedQueue);
+        System.out.println("* FINISHED QUEUE: " +"\n"+finishedQueue);
         System.out.println("==============================================================================================");
     }
 }
