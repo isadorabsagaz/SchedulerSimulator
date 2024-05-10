@@ -29,7 +29,7 @@ public class Logs {
                 System.out.println("Lost deadline for task " + task.getId());
                 System.out.println("Frequency of lost deadlines = "+ (float) (task.getN() - 1) / task.getCountMissedDeadlines());
             }
-            if(task.getWaiting_time() > info.getSimulation_time()) System.out.println("Starvation of task " + task.getId());
+            if(task.getWaiting_time() + task.getInitial_computation_time() > info.getSimulation_time()) System.out.println("Starvation of task " + task.getId());
         }
 
         Task biggestWaitingTime = queue.get(0);
